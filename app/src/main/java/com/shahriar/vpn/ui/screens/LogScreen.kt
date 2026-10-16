@@ -30,7 +30,7 @@ import com.shahriar.vpn.ui.theme.TextDim
  */
 @Composable
 fun LogScreen() {
-    val logs by VpnEventBus.logs.collectAsState()
+    val logs by VpnEventBus.logs.collectAsState(initial = emptyList())
     val logList = remember(logs) { logs.toList() }
 
     Column(
