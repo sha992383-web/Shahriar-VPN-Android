@@ -1,8 +1,6 @@
 package com.shahriar.vpn.core
 
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -39,9 +37,9 @@ object VpnEventBus {
     // ── Currently connected profile ───────────────────
     val connectedProfile = MutableStateFlow<Profile?>(null)
 
-    // ── Terminal-style logs ───────────────────────────
-    private val _logs = MutableSharedFlow<String>(replay = 64, extraBufferCapacity = 256)
-    val logs: SharedFlow<String> = _logs
+    // ── Terminal-style logs (rolling buffer, newest last) ──
+    private val _logLines = MutableStateFlow<List<String>>(emptyList())
+    val logLines: StateFlow<List<String>> = _logLines
 
     private val timeFormat = SimpleDateFormat("HH:mm:ss", Locale.US)
 
@@ -51,7 +49,7 @@ object VpnEventBus {
 
     fun log(message: String) {
         val line = timeFormat.format(Date()) + " ▸ " + message
-        _logs.tryEmit(line)
+        _logLines.value = (_logLines.value + line).takeLast(300)
     }
 
     fun setStats(up: Long, down: Long) {
