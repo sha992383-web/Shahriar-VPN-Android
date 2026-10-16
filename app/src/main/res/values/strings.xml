@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">فیلترشکن شهریار</string>
+    <string name="notif_channel">وضعیت اتصال شهریار</string>
+    <string name="notif_title">شهریار فعال است</string>
+    <string name="notif_text">اتصال امن برقرار است</string>
+    <string name="notif_action_stop">قطع اتصال</string>
+</resources>
